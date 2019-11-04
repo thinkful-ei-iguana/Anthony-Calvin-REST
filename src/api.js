@@ -1,7 +1,12 @@
 const BASE_URL = 'https://thinkful-list-api.herokuapp.com/calvin-anthony';
 
 const getItems = function() {
-  return fetch(`${BASE_URL}/items`);
+  try {
+    return fetch(`${BASE_URL}/items`);
+  }
+  catch (error) {
+    console.error('(FROM API) Error cause is:', error);
+  }
 };
 
 const createItem = function(name) {
@@ -9,22 +14,37 @@ const createItem = function(name) {
     name: name
   };
   let body = JSON.stringify(newItem);
-  return fetch(`${BASE_URL}/items`, { method: 'POST', headers: { 'Content-type': 'application/json' }, body: body });
+  try {
+    return fetch(`${BASE_URL}/items`, { method: 'POST', headers: { 'Content-type': 'application/json' }, body: body });
+  }
+  catch (error) {
+    console.error('(FROM API) Error cause is:', error);
+  }
 };
 
 const updateItem = function(id, updateData) {
-  return fetch(`${BASE_URL}/items/${id}`, {
-    method: 'PATCH',
-    headers: { 'Content-type': 'application/json' },
-    body: JSON.stringify(updateData)
-  });
+  try {
+    return fetch(`${BASE_URL}/items/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify(updateData)
+    })} 
+  catch (error) {
+    console.error('(FROM API) Error cause is:', error);
+  }
+    
 };
 
 const deleteItem = function(id) {
-  return fetch(`${BASE_URL}/items/${id}`, {
-    method: 'DELETE',
-    headers: { 'Content-type': 'application/json' }
-  });
+  try {
+    return fetch(`${BASE_URL}/items/${id}`, {
+      method: 'DELETE',
+      headers: { 'Content-type': 'application/json' }
+    });
+  }
+  catch (error) {
+    console.error('(FROM API) Error cause is:', error);
+  }
 };
 
 export default {

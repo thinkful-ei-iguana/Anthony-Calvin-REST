@@ -67,7 +67,12 @@ const handleDeleteItemClicked = function() {
     // get the index of the item in store.items
     const id = getItemIdFromElement(event.currentTarget);
     // delete the item
-    api.deleteItem(id).then(() => store.findAndDelete(id));
+    try {
+      api.deleteItem(id).then(() => store.findAndDelete(id));
+    }
+    catch (error) {
+      console.error('(FROM API) Error cause is:', error);
+    }
     // render the updated shopping list
     render();
   });
