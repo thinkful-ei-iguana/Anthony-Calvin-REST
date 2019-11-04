@@ -12,7 +12,12 @@ const createItem = function(name) {
   return fetch(`${BASE_URL}/items`, { method: 'POST', headers: { 'Content-type': 'application/json' }, body: body });
 };
 
+const updateItem = function(id, updateData) {
+  return fetch(`${BASE_URL}/items/${id}`, { method: 'PATCH', headers: { 'Content-type': 'application/json' }, body: JSON.stringify(updateData) });
+};
+
 export default {
   getItems,
-  createItem
+  createItem,
+  updateItem
 };
