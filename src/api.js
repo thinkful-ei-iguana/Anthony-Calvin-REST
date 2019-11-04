@@ -41,7 +41,7 @@ const createItem = function(name) {
 };
 
 const updateItem = function(id, updateData) {
-  return listApiFetch(`${BASE_URL}/iitems/${id}`, {
+  return listApiFetch(`${BASE_URL}/items/${id}`, {
     method: 'PATCH',
     headers: { 'Content-type': 'application/json' },
     body: JSON.stringify(updateData)
