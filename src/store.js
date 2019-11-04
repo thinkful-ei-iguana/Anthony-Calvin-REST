@@ -11,7 +11,7 @@ const addItem = function(item) {
 
 const findAndUpdate = function(id, newData) {
   let foundItem = this.items.find(item => item.id === id);
-  return Object.assign(newData, foundItem);
+  return Object.assign(foundItem, newData);
 };
 
 const findAndDelete = function(id) {
@@ -22,6 +22,8 @@ const toggleCheckedFilter = function() {
   this.hideCheckedItems = !this.hideCheckedItems;
 };
 
+const error = '';
+
 export default {
   items,
   hideCheckeditems,
@@ -29,5 +31,6 @@ export default {
   findAndUpdate,
   addItem,
   findAndDelete,
-  toggleCheckedFilter
+  toggleCheckedFilter,
+  error
 };

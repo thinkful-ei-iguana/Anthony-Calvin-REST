@@ -31,6 +31,11 @@ const generateShoppingItemsString = function(shoppingList) {
   return items.join('');
 };
 
+const handleError = error => {
+  store.error = error.message;
+  render();
+};
+
 const render = function() {
   // Filter item list if store prop is true by item.checked === false
   let items = [ ...store.items ];
@@ -39,8 +44,11 @@ const render = function() {
   }
 
   // render the shopping list in the DOM
-  const shoppingListItemsString = generateShoppingItemsString(items);
+  let shoppingListItemsString = generateShoppingItemsString(items);
 
+  if (store.error) {
+    shoppingListItemsString = `<div><h5>${store.error}</h5></div>` + shoppingListItemsString;
+  }
   // insert that HTML into the DOM
   $('.js-shopping-list').html(shoppingListItemsString);
 };
@@ -50,10 +58,13 @@ const handleNewItemSubmit = function() {
     event.preventDefault();
     const newItemName = $('.js-shopping-list-entry').val();
     $('.js-shopping-list-entry').val('');
-    api.createItem(newItemName).then(res => res.json()).then(newItem => {
-      store.addItem(newItem);
-      render();
-    });
+    api
+      .createItem(newItemName)
+      .then(newItem => {
+        store.addItem(newItem);
+        render();
+      })
+      .catch(handleError);
   });
 };
 
@@ -67,12 +78,13 @@ const handleDeleteItemClicked = function() {
     // get the index of the item in store.items
     const id = getItemIdFromElement(event.currentTarget);
     // delete the item
-    try {
-      api.deleteItem(id).then(() => store.findAndDelete(id));
-    }
-    catch (error) {
-      console.error('(FROM API) Error cause is:', error);
-    }
+    api
+      .deleteItem(id)
+      .then(() => {
+        store.findAndDelete(id);
+        render();
+      })
+      .catch(handleError);
     // render the updated shopping list
     render();
   });
@@ -85,17 +97,11 @@ const handleEditShoppingItemSubmit = function() {
     const itemName = $(event.currentTarget).find('.shopping-item').val();
     api
       .updateItem(id, itemName)
-      .then(res => {
-        if (res.ok) {
-          return res.json();
-        }
-        else throw new Error();
-      })
       .then(resJSON => {
         store.findAndUpdate(id, itemName);
         render();
       })
-      .catch(console.log);
+      .catch(handleError);
     render();
   });
 };
@@ -103,11 +109,17 @@ const handleEditShoppingItemSubmit = function() {
 const handleItemCheckClicked = function() {
   $('.js-shopping-list').on('click', '.js-item-toggle', event => {
     const id = getItemIdFromElement(event.currentTarget);
-    api.updateItem(id).then(res => {
-      id.checked !== item.checked;
-      store.findAndUpdate(id, newData);
-      render();
-    });
+    let item = store.items.find(item => item.id === id);
+    let checked = !item.checked;
+    console.log(checked);
+    api
+      .updateItem(id, { checked })
+      .then(item => {
+        store.findAndUpdate(id, { checked });
+        render();
+        return item;
+      })
+      .catch(handleError);
     render();
   });
 };

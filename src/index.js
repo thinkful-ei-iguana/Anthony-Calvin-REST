@@ -7,13 +7,18 @@ import store from './store';
 import shoppingList from './shopping-list';
 
 const main = function() {
-  api.getItems().then(res => res.json()).then(items => {
-    items.forEach(item => store.addItem(item));
-    shoppingList.render();
-
-    shoppingList.bindEventListeners();
-    shoppingList.render();
-  });
+  api
+    .getItems()
+    .then(items => {
+      items.forEach(item => store.addItem(item));
+      shoppingList.bindEventListeners();
+      shoppingList.render();
+    })
+    .catch(error => {
+      store.error = error;
+      shoppingList.render();
+      console.log(error);
+    });
 };
 
 $(main);
