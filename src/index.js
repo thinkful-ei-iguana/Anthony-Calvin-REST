@@ -7,10 +7,7 @@ import './index.css';
 import shoppingList from './shopping-list';
 
 const main = function() {
-  api.getItems()
-  .then(res => console.log(res));
-
-console.log(api.BASE_URL);
+  api.getItems().then(res => res.json()).then(res => console.log(res));
   shoppingList.bindEventListeners();
   shoppingList.render();
 };

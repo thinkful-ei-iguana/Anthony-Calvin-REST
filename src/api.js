@@ -1,10 +1,8 @@
 const BASE_URL = 'https://thinkful-list-api.herokuapp.com/calvin-anthony';
 
-
-const getItems = function () {
-  return Promise.resolve('A successful response!');
+const getItems = function() {
+  fetch(`${BASE_URL}/items`);
 };
-
 
 export default {
   getItems
