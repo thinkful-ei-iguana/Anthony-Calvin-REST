@@ -13,11 +13,23 @@ const createItem = function(name) {
 };
 
 const updateItem = function(id, updateData) {
-  return fetch(`${BASE_URL}/items/${id}`, { method: 'PATCH', headers: { 'Content-type': 'application/json' }, body: JSON.stringify(updateData) });
+  return fetch(`${BASE_URL}/items/${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify(updateData)
+  });
+};
+
+const deleteItem = function(id) {
+  return fetch(`${BASE_URL}/items/${id}`, {
+    method: 'DELETE',
+    headers: { 'Content-type': 'application/json' }
+  });
 };
 
 export default {
   getItems,
   createItem,
-  updateItem
+  updateItem,
+  deleteItem
 };
